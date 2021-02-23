@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Registration</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap-4.0.0.css" rel="stylesheet">
+
+	  <style>
+		  .customdiv{
+			  height: 90px;
+		  }
+        h1{
+           color: whitesmoke;
+           text-align: center;
+        }
+	  </style>
+  </head>
+  <body>
+	  <div class="container-fluid">
+        <header class="row">
+           <div class="col-12 bg-danger">
+              <div class="customdiv">
+                 <h1>User Profile</h1>
+               </div>
+            </div>
+         </header>
+      </div>
+      
+      <script>
+         function check_pass() 
+         {
+          if (profile.getElementById('password').value == profile.getElementById('reenter').value) {
+              profile.getElementById('submit').disabled = false;
+             } 
+          else {
+              profile.getElementById('submit').disabled = true;
+             }
+         }
+      </script>
+      
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+               <li class="nav-item">
+                  <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+               </li>
+               
+               <li class="nav-item active">
+                  <a class="nav-link" href="profile.html">User Profile</a>
+               </li>
+               
+               <li class="nav-item">
+                  <a class="nav-link" href="fuel.html">Fuel</a>
+               </li>
+            </ul>
+            
+            <form class="form-inline my-2 my-lg-0">
+               <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+               <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+         </div>
+      </nav>
+      
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-6">
+               <div class="customform">
+                  <br>
+                  
+                  <form action="Registration" method="get">
+                     <div class="form-group">
+                        <br><h2>Personal Details</h2>
+                        <br><h4> Already have an account? Click <a href="UserRegistration.html">here</a> </h4><br>
+                        
+                        <label for="fullname">Full Name:</label>
+                        <input type="text" class="form-control" id="fullname" placeholder="Enter Your Fullname" name="fullname" maxlength="50" required><br>
+                        
+                        <label for="address1">Address 1:</label>
+                        <input type="text" class="form-control" id="address1" placeholder="Enter Your Address" name="address1" maxlength="100" required><br>
+                        
+                        <label for="address2">Address 2:</label>
+                        <input type="text" class="form-control" id="address2" placeholder="Enter Your Address" name="address2" maxlength="100"><br>
+                        
+                        <label for="city">City:</label>
+                        <input type="text" class="form-control" id="city" placeholder="Enter Your City" name="city" maxlength="100" required><br>  
+                        
+                        <label for="state">State</label>
+                        <select name="state" id="state" class="form-control" required>
+                           <option value="" selected="selected">Select Your State</option>
+                           <option value="Alabama">AL</option>
+                           <option value="Alaska">AK</option>
+                           <option value="Arizona">AZ</option>
+                           <option value="Arkansas">AR</option>
+                           <option value="California">CA</option>
+                           <option value="Colorado">CO</option>
+                           <option value="Connecticut">CT</option>
+                           <option value="Delaware">DE</option>
+                           <option value="District_Of_Columbia">DC</option>
+                           <option value="Florida">FL</option>
+                           <option value="Georgia">GA</option>
+                           <option value="Hawaii">HI</option>
+                           <option value="Idaho">ID</option>
+                           <option value="Illinois">IL</option>
+                           <option value="Indiana">IN</option>
+                           <option value="Iowa">IA</option>
+                           <option value="Kansas">KS</option>
+                           <option value="Kentucky">KY</option>
+                           <option value="Louisiana">LA</option>
+                           <option value="Maine">ME</option>
+                           <option value="Maryland">MD</option>
+                           <option value="Massachusetts">MA</option>
+                           <option value="Michigan">MI</option>
+                           <option value="Minnesota">MN</option>
+                           <option value="Mississippi">MS</option>
+                           <option value="Missouri">MO</option>
+                           <option value="Montana">MT</option>
+                           <option value="Nebraska">NE</option>
+                           <option value="Nevada">NV</option>
+                           <option value="New_Hampshire">NH</option>
+                           <option value="New_Jersey">NJ</option>
+                           <option value="New_Mexico">NM</option>
+                           <option value="New_York">NY</option>
+                           <option value="North_Carolina">NC</option>
+                           <option value="North_Dakota">ND</option>
+                           <option value="Ohio">OH</option>
+                           <option value="Oklahoma">OK</option>
+                           <option value="Oregon">OR</option>
+                           <option value="Pennsylvania">PA</option>
+                           <option value="Rhode_Island">RI</option>
+                           <option value="South_Carolina">SC</option>
+                           <option value="South_Dakota">SD</option>
+                           <option value="Tennessee">TN</option>
+                           <option value="Texas">TX</option>
+                           <option value="Utah">UT</option>
+                           <option value="Vermont">VT</option>
+                           <option value="Virginia">VA</option>
+                           <option value="Washington">WA</option>
+                           <option value="West_Virginia">WV</option>
+                           <option value="Wisconsin">WI</option>
+                           <option value="Wyoming">WY</option>
+                        </select><br>
+                        
+                        <label for="zipcode">Zipcode</label>
+					         <input type="text" class="form-control" id="zipcode" placeholder="Enter Your Zipcode" name="zipcode" maxlength="9" minlength="5" required><br>
+					  
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Type Your Preferred Username" name="username" maxlength="50" required><br>
+
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" required onchange="check_pass()"><br>
+
+                        <label for="reenter">Re-enter Password</label>
+                        <input type="password" class="form-control" id="reenter" placeholder="Reenter Password" name="reenter" required reenter=password onchange="check_pass()"><br>
+                     </div>
+                     
+                     <input type="submit" class="btn btn-primary" value="Save">
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      
+      <!-- jQuery--> 
+      <script src="js/jquery-3.2.1.min.js"></script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap-4.0.0.js"></script>
+ 
+   </body>
+</html>
