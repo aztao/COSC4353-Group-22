@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Fuel_group22;
 
 namespace Fuel_group22
 {
-    class LoginModule
+    class ClientProfileManagementModule
     {
         private string fullname;
         private string address1;
@@ -38,7 +39,7 @@ namespace Fuel_group22
         public void CheckAddress2(string address2)
         {
             bool confirmA2 = address2.Length <= 50;
-            if (confirmA2==false)
+            if (confirmA2 == false)
             {
                 Console.WriteLine("Address line 2 exceeds character limit.");
             }
@@ -64,7 +65,7 @@ namespace Fuel_group22
 
         public void CheckZip(string zipcode)
         {
-            bool confirmZip = zipcode.Length <= 9 && zipcode.Length>5;
+            bool confirmZip = zipcode.Length <= 9 && zipcode.Length > 5;
             if (confirmZip == false)
             {
                 Console.WriteLine("Zipcode does not meet character limit.");
@@ -83,7 +84,7 @@ namespace Fuel_group22
         public void CheckPass(string password)
         {
             bool confirmPass = password.Contains("password");
-            if(confirmPass==true)
+            if (confirmPass == true)
             {
                 Console.WriteLine("Password should not contain the word password.");
             }
@@ -92,11 +93,10 @@ namespace Fuel_group22
         public void CheckRe(string reenter)
         {
             bool confirmReenter = reenter == password;
-            if(confirmReenter==false)
+            if (confirmReenter == false)
             {
                 Console.WriteLine("Passwords do not match.");
             }
         }
     }
-        
 }

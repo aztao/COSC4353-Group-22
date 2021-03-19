@@ -7,5 +7,6 @@ namespace Fuel_group22
 {
     class PricingModule
     {
+        //For Assignment 3 just create a class
     }
 }
