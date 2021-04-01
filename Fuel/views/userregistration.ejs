@@ -1,0 +1,39 @@
+<%- include('partials/header'); %>
+   </head>
+<body>
+
+<div class="container-fluid">
+    <header class="row">
+       <div class="col-12 bg-danger">
+          <div class="customdiv">
+             <h1>Register New User</h1>
+          </div>
+       </div>
+    </header>
+</div>
+
+<%- include('partials/navbar'); %>
+
+<div class="container">
+    <div class="row">
+       <div class="col-lg-6">
+          <div class="customform">
+             <br>
+             <form action="/userregistration" method="post">
+                <div class="form-group"><br>
+                   <h2>USER LOGIN</h2>
+                   
+                   <label for="username">Enter Your Username</label>
+                   <input type="text" class="form-control" id="username" placeholder="Enter User Name" name="username" required><br>
+                   
+                   <label for="password">Password</label>
+                   <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" required><br>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Register">
+             </form>
+          </div>
+       </div>
+    </div>
+ </div>
+
+<%- include('partials/footer'); %>
