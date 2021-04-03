@@ -1,12 +1,13 @@
 const { expect } = require('chai');
 const chai = require('chai');
 const { JSDOM } = require('jsdom');
+const userregistration = require('../views/userregistration.ejs')
 chai.use(require('chai-dom'));
 require('jsdom-global')();
 
 describe('userregistration.ejs', () => {
   beforeEach((done) => {
-   JSDOM.fromFile('../Fuel/views/userregistration.ejs')
+   JSDOM.fromFile('../Fuel New/views/userregistration.ejs')
    .then((dom) => {
      global.document = dom.window.document
    })
