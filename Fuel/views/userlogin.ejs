@@ -1,0 +1,44 @@
+<%- include('partials/header'); %>
+   </head>
+<body>
+
+<div class="container-fluid">
+    <header class="row">
+       <div class="col-12 bg-danger">
+          <div class="customdiv">
+             <h1>Login</h1>
+          </div>
+       </div>
+    </header>
+</div>
+
+<%- include('partials/navbar'); %>
+
+<section id="loginsection">
+   <div class="container">
+      <div class="row">
+         <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form">
+           <br>
+           <div class="jumbotron">
+              <form action="/userlogin" method="post">
+                 <h2 class="text-center">Login</h2>
+                 <br>
+                 <div class="form-group">
+                    <label for="username">Enter New Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter User Name" name="username" required><br>
+                 </div>
+                 <div class="form-group">
+                    <label for="password">Enter Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" required><br>
+                 </div>
+                 <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                 </div>
+              </form>
+           </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<%- include('partials/footer'); %>

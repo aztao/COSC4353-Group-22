@@ -3,8 +3,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-const { forEach } = require("lodash");
-const encrypt = require("mongoose-encryption");
+const cookieParser = require('cookie-parser')
+const session=require("express-session");
+const passport=require("passport");
+const passportLocalMongoose=require("passport-local-mongoose");
+const bcrypt=require("bcrypt");
+const moment=require("moment");
+const saltRounds=10;
 
 const app = express();
 const portNo = 3000
@@ -14,45 +19,73 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+app.use(cookieParser());
+app.use(session({
+    secret:process.env.SECRET1,
+    resave:false,
+    saveUninitialized:false
+  }));
+  
+app.use(passport.initialize());
+app.use(passport.session());
+
 mongoose.connect("mongodb://localhost:27017/fuelDB",{useNewUrlParser:true,useUnifiedTopology:true});
+mongoose.set("useCreateIndex",true);;
 
 const userCredentialSchema=new mongoose.Schema({
     userId:{
         type:String,
-        required:[true,"Please enter Username"],
+        required:true,
         unique:true
     },
-    password:{
+    pass:{
         type:String,
-        required:[true,"Please enter password"]
+        required:true
     }
 });
 
 
-userCredentialSchema.plugin(encrypt,{secret:process.env.SECRET1,encryptedFields:['password']});
-
 const UserCred=mongoose.model('UserCredential',userCredentialSchema);
 
+
 const clientInfoSchema=new mongoose.Schema({
-    clientname:{
+    clientFullname:String,
+    address1:String,
+    address2:String,
+    city:String,
+    state:String,
+    zipcode:String,
+    username:{
         type:String,
         unique:true
     },
-    clientpass:{
+    password:{
         type:String,
     },
-    address1:String,
-    address2:String,
-    state:String,
+    
 });
 
-clientInfoSchema.plugin(encrypt,{secret:process.env.SECRET2,encryptedFields:['clientpass']});
+clientInfoSchema.plugin(passportLocalMongoose);
 
 const ClientInfo=mongoose.model('ClientInfo',clientInfoSchema);
 
+passport.use(ClientInfo.createStrategy())
+passport.serializeUser(ClientInfo.serializeUser());
+passport.deserializeUser(ClientInfo.deserializeUser());
+
 const fuelQuoteSchema=new mongoose.Schema({
-    gallons:Number,
-    suggestedprice:Number,
+    fuelrequestor:String,
+    qno:Number,
+    gallons:{
+        type:Number,
+        required:[true,"gallons cannot be empty"]
+    },
+    deliveryAddress:String,
+    deliveryDate:Date,
+    suggestedprice:{
+        type:Number,
+        required:[true,"suggested price cannot be empty"]
+    },
     totalprice:Number
 });
 
@@ -62,35 +95,28 @@ app.get("/",function(req,res){
     res.render("home",{pageTitle:"Home"});
 });
 
-app.get("/userregistration",function(req,res){
-    res.render("userregistration",{pageTitle:"User Registration"});
+app.get("/userlogin",function(req,res){
+    res.render("userlogin",{pageTitle:"Login"});
 });
 
-app.post("/userregistration",function(req,res){
-   const user={
-    ID:req.body.username,
-    pass:req.body.password
-   };
-   ClientInfo.findOne({clientname:user.ID},function(err,foundUser){
-    if(!err)
-        {
-            if(foundUser)
-                {
-                    if(foundUser.clientpass===user.pass)
-                        {
-                            const userCredentials=new UserCred({
-                                userId:foundUser,
-                                password:foundUser.clientpass
-                            });
-                            userCredentials.save(function(err){
-                                if(!err)
-                                console.log("Validation successful!!");
-                            });
-                            res.render("fuel",{pageTitle:"Fuel",DelAddress:foundUser.address1+" "+foundUser.address2});
-                        }
-                }
-        }
+app.post("/userlogin",function(req,res){
+   const user=new ClientInfo({
+    username:req.body.username,
+    password:req.body.password
    });
+   req.login(user,function(err){
+    passport.authenticate("local")(req,res,function(){
+        // console.log("Validation successful!!"+req.user.id);
+        bcrypt.hash(req.body.password,saltRounds,function(herr,hash){
+            const newUser=new UserCred({
+                userId:req.user.username,
+                pass:hash
+            });
+            newUser.save();
+            res.redirect("/fuel");
+        });   
+    });
+  });
 });
 
 app.get("/profile",function(req,res){
@@ -98,44 +124,168 @@ app.get("/profile",function(req,res){
 });
 
 app.post("/profile",function(req,res){
-    const newUser=new ClientInfo({
-        clientname:req.body.username,
-        clientpass:req.body.password,
+    ClientInfo.register({
+        username:req.body.username,
+        clientFullname:req.body.fullname,
         address1:req.body.address1,
         address2:req.body.address2,
-        state:req.body.state
-    });
-    newUser.save(function(err){
-        if(!err)
+        city:req.body.city,
+        state:req.body.state,
+        zipcode:req.body.zipcode,
+    },req.body.password,function(err,user){
+        if(err)
             {
-                console.log("Username is "+newUser.clientname);
-                console.log("Password is "+newUser.clientpass);
-                console.log("A1 is "+newUser.address1);
-                console.log("A2 is "+newUser.address2);
-                res.redirect("/userregistration");
+                console.log(err);
+                res.redirect("/profile");
             }
         else
-            console.log(err);
-    })
+            {
+                passport.authenticate("local")(req,res,function(){
+                    res.redirect("/userlogin");
+                  });
+            }
+    });
 });
 
 app.get("/fuel",function(req,res){
-        res.render("fuel",{pageTitle:"Fuel",DelAddress:"No address"});
+    if(req.isAuthenticated())
+        {   
+            FuelQuotes.findOne({fuelrequestor:req.user.clientFullname},function(err,foundPrevRecord){
+                if(!err)
+                    {
+                        if(foundPrevRecord)
+                            {
+                                if(foundPrevRecord.qno>=1)
+                                    res.render("fuel",{pageTitle:"Fuel",DelAddress:req.user.address1+" "+req.user.address2,USState:req.user.state,prevReq:foundPrevRecord.qno});
+                            }
+                        else
+                            res.render("fuel",{pageTitle:"Fuel",DelAddress:req.user.address1+" "+req.user.address2,USState:req.user.state,prevReq:0});
+                    }
+            });
+        }
+    else
+        res.render("fuel",{pageTitle:"Fuel",DelAddress:"No address",USState:"None",prevReq:0});
 });
 
 app.post("/fuel",function(req,res){
-    const newFuelQuota=new FuelQuotes({
-        gallons:req.body.Gallons,
-        suggestedprice:req.body.suggestedprice,
-        totalprice:req.body.total
-    });
-    newFuelQuota.save(function(err){
-        console.log(newFuelQuota);
-    });
+    if(req.isAuthenticated())
+        {
+            FuelQuotes.countDocuments({fuelrequestor:req.user.clientFullname},function(err,Qno){
+                if(!err)
+                    {
+                        var newFuelQuota;
+                        if(Qno)
+                            {
+                                newFuelQuota=new FuelQuotes({
+                                    fuelrequestor:req.user.clientFullname,
+                                    gallons:req.body.Gallons,
+                                    deliveryAddress:req.user.address1+" "+req.user.address2,
+                                    deliveryDate:req.body.DelDate,
+                                    suggestedprice:req.body.suggestedprice,
+                                    totalprice:req.body.total,
+                                    qno:Qno+1
+                                });
+                            }
+                        else
+                            {
+                                newFuelQuota=new FuelQuotes({
+                                    fuelrequestor:req.user.clientFullname,
+                                    gallons:req.body.Gallons,
+                                    deliveryAddress:req.user.address1+" "+req.user.address2,
+                                    deliveryDate:req.body.DelDate,
+                                    suggestedprice:req.body.suggestedprice,
+                                    totalprice:req.body.total,
+                                    qno:1
+                                });
+                            }
+                            newFuelQuota.save(function(err){
+                                    res.redirect("/");
+                                });
+                    }
+            });
+        }   
+    else
+        res.redirect("/error");
 });
 
+
+app.get("/fuelhistory/:fueluser/:quotation",function(req,res){
+    if(req.isAuthenticated())
+        {
+            const fueluser=req.params.fueluser;
+            const qNumber=req.params.quotation;
+            FuelQuotes.countDocuments({fuelrequestor:fueluser},function(err,countDocs){
+                if(!err)
+                    if(countDocs)
+                        {
+                            FuelQuotes.find({fuelrequestor:fueluser},function(error,foundFuelRecord){
+                                if(!error)
+                                    if(foundFuelRecord)
+                                        {
+                                            foundFuelRecord.forEach(function(recs){
+                                                if(qNumber==recs.qno)
+                                                    {
+                                                        res.render("fuelhistory",{
+                                                            pageTitle:"Fuel Quote History",
+                                                            person:recs.fuelrequestor,
+                                                            userGallons:recs.gallons,
+                                                            userDelAdd:req.user.address1+" "+req.user.address2,
+                                                            userDelDate:moment(recs.deliveryDate).format("DD/MM/YYYY"), 
+                                                            usersuggestedprice:recs.suggestedprice,
+                                                            userTotalPrice:recs.totalprice,
+                                                        });
+                                                    }
+                                            });
+                                        }
+                            });
+                        }
+            });
+        }
+    else
+        res.redirect("error");
+
+});
+
+app.post("/fuelhistorymain",function(req,res){
+    if(req.isAuthenticated())
+        {
+            const fullname=req.body.search;
+            FuelQuotes.countDocuments({fuelrequestor:fullname},function(err,Qno){
+                if(!err)
+                    {
+                        if(Qno)
+                        {
+                            res.render("fuelhistorymain",{
+                                pageTitle:"Fuel Quote History",
+                                person:fullname,
+                                requestedHistory:Qno      
+                                });
+                        }
+                    else
+                        {
+                            res.render("fuelhistorymain",{
+                                pageTitle:"Fuel Quote History",
+                                person:fullname,
+                                requestedHistory:0      
+                                });    
+                        }
+                    }
+            });
+        }
+    else
+        res.redirect("error");
+            
+});
+
+app.get("/error",function(req,res){
+    res.render("error");
+});
+
+app.get("/logout",function(req,res){
+    req.logout();
+    res.redirect("/userlogin");
+  });
 
 app.listen(portNo, function() {
     console.log("Runnin on "+portNo);
   });
-  

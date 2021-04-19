@@ -1,0 +1,39 @@
+<%- include('partials/header'); %>
+</head>
+<body>
+
+<div class="container-fluid">
+<header class="row">
+   <div class="col-12 bg-danger">
+      <div class="customdiv">
+         <h1>Fuel History for <%=person%></h1>
+      </div>
+   </div>
+</header>
+</div>
+
+<%- include('partials/navbar'); %>
+
+<% if( requestedHistory === 0 ) { %>
+    <div class="center">
+        <p>Oops! You dont have any history! Try adding something <a href="/fuel">here</a>.</p>
+    </div>
+<%  } else { %>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <div class="jumbotron text-center">
+                    <h2>Quotation History</h2><br>
+                        <div class="list-group col-sm-6 mx-auto">
+                            <% for(var i=1;i<= requestedHistory ;i++){ %>
+                                <a href="/fuelhistory/<%=person%>/<%=i%>" class="list-group-item">Quotation <%=i%></a>
+                                <% } %>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+<%   } %>
+
+<%- include('partials/footer'); %>

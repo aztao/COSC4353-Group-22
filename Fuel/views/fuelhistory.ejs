@@ -1,0 +1,46 @@
+<%- include('partials/header'); %>
+</head>
+<body>
+
+<div class="container-fluid">
+<header class="row">
+   <div class="col-12 bg-danger">
+      <div class="customdiv">
+         <h1>Fuel History for <%=person%></h1>
+      </div>
+   </div>
+</header>
+</div>
+
+<%- include('partials/navbar'); %>
+
+<section id="fuel-history-section">
+<div class="container">
+    <div class="row">
+        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form">
+            <br>
+            <div class="jumbotron">
+                <form>
+                    <label for="Gallons">Gallons Requested: </label>
+                    <input type="text" class="form-control-plaintext" id="Gallons" name="Gallons" value="<%=userGallons%>" readonly><br>
+
+                    <label for="DelAdd">Delivery Address: </label>
+                    <input type="text" class="form-control-plaintext" id="DelAdd" name="deladds" value="<%=userDelAdd%>" readonly><br>
+
+                    <label for="DelDate">Delivery Date: </label>
+                    <input type="text" class="form-control-plaintext" id="DelDate" name="DelDate" value="<%=userDelDate%>" readonly><br>
+
+                    <label for="Price">Suggested Price / Gallon: </label>
+                    <input type="text" class="form-control-plaintext" id="Price" name="suggestedprice" value="<%=usersuggestedprice%>" readonly><br>
+
+                    <label for="Total">Total Amount Due: </label>
+                    <input type="text" class="form-control-plaintext" id="Total" name="total" value="<%=userTotalPrice%>" readonly><br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+
+<%- include('partials/footer'); %>
