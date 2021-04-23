@@ -15,18 +15,11 @@ describe('userlogin.ejs', () => {
  })
 
 describe("Level 1 heading", () => {
- it("h1 element should say 'Login'", () => {
+ it("h1 element should say 'Welcome! Please Login'", () => {
   let element = document.querySelector('h1')
-  expect(element).to.have.text("Login")
+  expect(element).to.have.text("Welcome! Please Login")
  })
 })
-
-describe("Level 2 heading", () => {
-  it("h2 element should say 'Login'", () => {
-   let element = document.querySelector('h2')
-   expect(element).to.have.text("Login")
-  })
- })
 
 describe("Username Requirement", () => {
  it("Username should be required", () => {
