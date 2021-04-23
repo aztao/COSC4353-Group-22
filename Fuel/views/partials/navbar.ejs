@@ -1,26 +1,49 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" >
         <span class="navbar-toggler-icon"></span>
     </button>
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <!-- <li class="nav-item active"> -->
+            <li
+                <% if(pageTitle ==='Home') { %>
+                    class="nav-item active" 
+                <%} else {%>
+                    class="nav-item" 
+                    <% } %> >
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             
-            <li class="nav-item active">
-                <a class="nav-link" href="/profile">User Profile <span class="sr-only">(current)</span></a>
+            <!-- <li class="nav-item active"> -->
+                <li
+                <% if(pageTitle ==='Profile'||pageTitle==='Login') { %>
+                    class="nav-item dropdown active" 
+                <%} else {%>
+                    class="nav-item dropdown" 
+                    <% } %> >
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown">User Profile <span class="sr-only">(current)</span></a>
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">Create New User</a>
+                    <a href="/userlogin" class="dropdown-item">Login</a>
+                </div>
             </li>
             
-            <li class="nav-item active">
+            <!-- <li class="nav-item active"> -->
+                <li
+                <% if(pageTitle ==='Fuel') { %>
+                    class="nav-item active" 
+                <%} else {%>
+                    class="nav-item" 
+                    <% } %> >
                 <a class="nav-link" href="/fuel">Fuel <span class="sr-only">(current)</span></a>
             </li>
 
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline my-2 my-lg-0" method="POST" action="/fuelhistorymain">
+            <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search History" aria-label="Search">
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
         </form>
+        <a class="btn btn-danger ml-3" href="/logout" role="button">Log Out</a>
     </div>
 </nav>
