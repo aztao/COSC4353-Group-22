@@ -7,7 +7,7 @@ require('jsdom-global')();
 
 describe('profile.ejs', () => {
   beforeEach((done) => {
-   JSDOM.fromFile('../Fuel New/views/profile.ejs')
+   JSDOM.fromFile('../Fuel/views/profile.ejs')
    .then((dom) => {
      global.document = dom.window.document
    })
@@ -15,9 +15,9 @@ describe('profile.ejs', () => {
  })
 
 describe("Level 1 heading", () => {
- it("h1 element should say 'User Profile'", () => {
+ it("h1 element should say 'Create new User Profile'", () => {
   let element = document.querySelector('h1')
-  expect(element).to.have.text("User Profile")
+  expect(element).to.have.text("Create new User Profile")
  })
 })
 
@@ -25,13 +25,6 @@ describe("Level 2 heading", () => {
     it("h2 element should say 'Personal Details'", () => {
      let element = document.querySelector('h2')
      expect(element).to.have.text("Personal Details")
-    })
-})
-
-describe("Level 4 heading", () => {
-    it("h4 element should say ' Already have an account? Click here'", () => {
-     let element = document.querySelector('h4')
-     expect(element).to.have.text(" Already have an account? Click here ")
     })
 })
 
@@ -116,7 +109,7 @@ describe("Address 2 should be a text input", () => {
 
  describe("Links text check", () => {
   it("Save button class should be a submit input", () => {
-   let element = document.querySelector('input.btn.btn-primary.btnbelow');
+   let element = document.querySelector('button.btn.btn-primary.btnbelow.btn-lg');
    expect(element).to.have.attr('type', 'submit')
   })
  })

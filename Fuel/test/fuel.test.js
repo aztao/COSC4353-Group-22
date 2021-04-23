@@ -7,7 +7,7 @@ require('jsdom-global')();
 
 describe('fuel.ejs', () => {
   beforeEach((done) => {
-   JSDOM.fromFile('../Fuel New/views/fuel.ejs')
+   JSDOM.fromFile('../Fuel/views/fuel.ejs')
    .then((dom) => {
      global.document = dom.window.document
    })

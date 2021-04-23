@@ -1,13 +1,13 @@
 const { expect } = require('chai');
 const chai = require('chai');
 const { JSDOM } = require('jsdom');
-const userregistration = require('../views/userregistration.ejs')
+const userlogin = require('../views/userlogin.ejs')
 chai.use(require('chai-dom'));
 require('jsdom-global')();
 
-describe('userregistration.ejs', () => {
+describe('userlogin.ejs', () => {
   beforeEach((done) => {
-   JSDOM.fromFile('../Fuel New/views/userregistration.ejs')
+   JSDOM.fromFile('../Fuel/views/userlogin.ejs')
    .then((dom) => {
      global.document = dom.window.document
    })
@@ -15,16 +15,16 @@ describe('userregistration.ejs', () => {
  })
 
 describe("Level 1 heading", () => {
- it("h1 element should say 'Register New User'", () => {
+ it("h1 element should say 'Login'", () => {
   let element = document.querySelector('h1')
-  expect(element).to.have.text("Register New User")
+  expect(element).to.have.text("Login")
  })
 })
 
 describe("Level 2 heading", () => {
-  it("h2 element should say 'USER LOGIN'", () => {
+  it("h2 element should say 'Login'", () => {
    let element = document.querySelector('h2')
-   expect(element).to.have.text("USER LOGIN")
+   expect(element).to.have.text("Login")
   })
  })
 
@@ -44,7 +44,7 @@ describe("Password Requirement", () => {
 
 describe("Links text check", () => {
  it("Register button class should be a submit input", () => {
-  let element = document.querySelector('input.btn.btn-primary');
+  let element = document.querySelector('button.btn.btn-primary.btn-lg');
   expect(element).to.have.attr('type', 'submit')
  })
 })
