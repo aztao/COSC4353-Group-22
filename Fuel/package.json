@@ -48,7 +48,6 @@
     "ms": "^2.0.0",
     "negotiator": "^0.6.2",
     "nodemon": "^2.0.7",
-    "nyc": "^15.1.0",
     "on-finished": "^2.3.0",
     "parseurl": "^1.3.3",
     "passport": "^0.4.1",
@@ -71,9 +70,12 @@
     "utils-merge": "^1.0.1",
     "vary": "^1.1.2"
   },
+  "nyc": {
+    "include": "test"
+  },
   "scripts": {
-    "test": "nyc mocha",
-    "coverage": "nyc --reporter=html npm run test"
+    "test": "nyc -x \"*/test/*.test.js\" --reporter=text --reporter=html mocha 'test'",
+    "coverage": "npm run test"
   },
   "author": "",
   "license": "ISC",
@@ -83,6 +85,7 @@
     "chai-webdriver": "^1.2.3",
     "jsdom": "16.5.2",
     "jsdom-global": "3.0.2",
-    "mocha": "^8.3.2"
+    "mocha": "^8.3.2",
+    "nyc": "^15.1.0"
   }
 }
