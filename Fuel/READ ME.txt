@@ -1,9 +1,13 @@
 To run:
-	Enter "node app.js" in terminal to run the application on your local device. 
-	If it is running correctly, you'll get a message that it is running on port 3000.
+	Enter "nodemon app.js" in terminal to run the application on your local device.
+		If it is running correctly, you'll get a message that it is running on port 3000.
+	To run the test cases "npm run test"
+	To run the code coverage "npm run coverage" 
+		The test cases run and display full coverage in the console after ctrl+C 
+		Full report is also available in html format in the "coverage" folder as "index.html"
 
 Tools used:
-	Frontend: HTML/CSS/JavaScript
+	Frontend: HTML/CSS/JavaScript and Bootstrap
 	Backend (till Assignment 3): Java (Work included in file called "Old stuff")
 	Backend (after Assignment 3): Nodejs (Detailed report provided in Assignment 4)
 	Database: MongoDB (steps shown in Assignment 4)
